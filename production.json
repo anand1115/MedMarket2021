@@ -1,7 +1,7 @@
 {
-    "DATABASE_NAME": "", 
-    "DATABASE_USER": "", 
-    "DATABASE_PASSWORD": "", 
-    "DATABASE_HOST": "",
-    "DATABASE_PORT": ""
+    "DATABASE_NAME": "xqivomov_medmarket", 
+    "DATABASE_USER": "xqivomov_medmarket2021", 
+    "DATABASE_PASSWORD": "Medmarket@2021", 
+    "DATABASE_HOST": "localhost",
+    "DATABASE_PORT": "3306"
 }
