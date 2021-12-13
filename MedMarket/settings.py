@@ -35,7 +35,7 @@ SECRET_KEY = 'django-insecure-5zct=n)+$ry#@4ehwh3hz9p=z)djqdbhp^bt+wh&g-+6b439qy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["medmarket.co.in","www.medmarket.co.in","localhost"]
 
 
 # Application definition
