@@ -23,21 +23,22 @@ class User(AbstractBaseUser):
 	objects=MyUserManager()
 
 	def __str__(self):
-	    return str(self.phonenumber)
+		return str(self.phonenumber)
+	
 	@property
 	def is_active(self):
-	    return self.active
+		return self.active
 
 	@property
 	def is_admin(self):
-	    return self.admin
-
+		return self.admin
+	
 	@property
 	def is_staff(self):
-	    return self.staff
-
+		return self.staff
+	
 	def has_perm(self,perm,obj=None):
-	    return True
+		return True
 
 	def has_module_perms(self,app_label):
 	    return True

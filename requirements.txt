@@ -5,3 +5,4 @@ djangorestframework-simplejwt
 mysqlclient
 PyJWT
 pytz
+pyotp

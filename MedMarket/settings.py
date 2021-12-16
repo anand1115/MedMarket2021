@@ -188,3 +188,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 import mimetypes
 
 mimetypes.add_type("text/css", ".css", True)
+
+OTP_INTERVAL_TIME=data["OTP_INTERVAL_TIME"]

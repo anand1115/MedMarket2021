@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self,full_name,phonenumber,email,password=None,admin=False,staff=False,email_verify=False,active=False):
+    def create_user(self,full_name,phonenumber,email,password=None,admin=False,staff=False,email_verify=False,active=True):
         if not full_name:
             raise ValueError(_("Please Enter Full Name !."))
 
