@@ -24,6 +24,9 @@ urlpatterns = [
     path('accounts/',include("apps.accounts.urls")),
     path('product/',include("apps.product.urls")),
 ]
-
-urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
-urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+if settings.PRODUCTION:
+    urlpatterns+=static("api/"+settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+    urlpatterns+=static("api/"+settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+    urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
