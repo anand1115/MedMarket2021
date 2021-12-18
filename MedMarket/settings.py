@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import json,datetime
 
-PRODUCTION = True
+PRODUCTION = False
 
 if PRODUCTION:
     with open(f"{BASE_DIR}/production.json","r") as f:
@@ -52,8 +52,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
 
     'apps.accounts',
+    'apps.product',
 
 ]
 
@@ -111,7 +113,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
      ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter','rest_framework.filters.OrderingFilter'],
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter',
+                                'rest_framework.filters.OrderingFilter',
+                                'django_filters.rest_framework.DjangoFilterBackend'
+                                ],
     'PAGE_SIZE': 10
 }
 
