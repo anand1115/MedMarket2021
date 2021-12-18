@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-5zct=n)+$ry#@4ehwh3hz9p=z)djqdbhp^bt+wh&g-+6b439qy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["medmarket.co.in","www.medmarket.co.in","localhost"]
+ALLOWED_HOSTS = ["medmarket.co.in/api/","www.medmarket.co.in/api/","localhost"]
 
 
 # Application definition
@@ -184,10 +184,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
 
-if PRODUCTION:
-    STATIC_ROOT=os.path.join(BASE_DIR, 'api/static')
-else:
-    STATIC_ROOT=os.path.join(BASE_DIR, 'static')
+STATIC_ROOT=os.path.join(BASE_DIR, 'static')
 MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,"media")
