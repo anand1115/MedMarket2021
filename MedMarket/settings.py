@@ -33,7 +33,7 @@ else:
 SECRET_KEY = 'django-insecure-5zct=n)+$ry#@4ehwh3hz9p=z)djqdbhp^bt+wh&g-+6b439qy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["medmarket.co.in","www.medmarket.co.in","localhost"]
 
@@ -115,8 +115,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter',
                                 'rest_framework.filters.OrderingFilter',
-                                'django_filters.rest_framework.DjangoFilterBackend'
-                                ],
+                                'django_filters.rest_framework.DjangoFilterBackend'],
     'PAGE_SIZE': 10
 }
 
@@ -181,19 +180,12 @@ import os
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-if PRODUCTION:
-    STATIC_URL = '/api/static/'
-else:
-    STATIC_URL = '/static/'
 
+STATIC_URL = '/static/'
 
 STATIC_ROOT=os.path.join(BASE_DIR, 'static')
-if PRODUCTION:
-    MEDIA_URL="/api/media/"
-else:
-    MEDIA_URL="/media/"
 
-
+MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 
