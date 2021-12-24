@@ -57,9 +57,9 @@ class Product(models.Model):
     active=models.BooleanField(default=True)
     quantity=models.IntegerField()
     quantity_type=models.CharField(max_length=250,null=True,blank=True)
-    discount=models.PositiveSmallIntegerField()
+    discount=models.PositiveSmallIntegerField(default=0)
     marked_price=models.DecimalField(decimal_places=2,max_digits=30)
-    selling_price=models.DecimalField(decimal_places=2,max_digits=30,null=True,blank=True)
+    selling_price=models.DecimalField(decimal_places=2,max_digits=30)
     discount_price=models.DecimalField(decimal_places=2,max_digits=30,null=True,blank=True)
     images=models.JSONField(default=image_dict)
     description=models.TextField(null=True,blank=True)
@@ -68,21 +68,21 @@ class Product(models.Model):
     safety_information=models.TextField(null=True,blank=True)
     other_information=models.TextField(null=True,blank=True)
     added_on=models.DateTimeField(auto_now_add=True)
+    expiry_date=models.DateField()
+    batch_number=models.CharField(max_length=250)
 
     def save(self,*args,**kwargs):
-        if not 0<=self.discount<=99:
-            self.discount=0
-            self.discount_price=0
+        if(self.selling_price>=self.marked_price):
             self.selling_price=self.marked_price
+            self.discount_price=0
+            self.discount=0
         else:
-            self.discount_price=(self.marked_price*self.discount)//100
-            self.selling_price=self.marked_price-((self.marked_price*self.discount)//100)
-        if(self.stock<=0):
-            self.active=False
+            self.discount_price=round((self.marked_price-self.selling_price),2)
+            self.discount=100-((self.selling_price/self.marked_price)*100)
         super().save(*args,**kwargs)
 
     def __str__(self):
-        return self.title
+        return self.title+"({})".format(self.id)
 
 
 

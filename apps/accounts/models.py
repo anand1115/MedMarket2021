@@ -15,6 +15,8 @@ class User(AbstractBaseUser):
 	staff=models.BooleanField(default=False)
 	active=models.BooleanField(default=False)
 	date_joined=models.DateTimeField(auto_now_add=True)
+	verified=models.BooleanField(default=False)
+	status=models.CharField(max_length=250,default="OnHold")#Approved,Suspended
 
 	USERNAME_FIELD='phonenumber'
 
@@ -24,6 +26,14 @@ class User(AbstractBaseUser):
 
 	def __str__(self):
 		return str(self.phonenumber)
+	
+
+	def save(self,*args,**kwargs):
+		if(self.status=="Approved"):
+			self.verified=True
+		else:
+			self.verified=False
+		super().save(*args,**kwargs)
 	
 	@property
 	def is_active(self):
@@ -42,6 +52,7 @@ class User(AbstractBaseUser):
 
 	def has_module_perms(self,app_label):
 	    return True
+
     
 
 

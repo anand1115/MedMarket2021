@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import json,datetime
 
-PRODUCTION = True
+PRODUCTION = False
 
 if PRODUCTION:
     with open(f"{BASE_DIR}/production.json","r") as f:
@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-5zct=n)+$ry#@4ehwh3hz9p=z)djqdbhp^bt+wh&g-+6b439qy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["medmarket.co.in","medmarket.co.in/api/","www.medmarket.co.in/api/","localhost"]
+ALLOWED_HOSTS = ["medmarket.co.in","www.medmarket.co.in","localhost"]
 
 
 # Application definition
@@ -57,6 +57,8 @@ INSTALLED_APPS = [
 
     'apps.accounts',
     'apps.product',
+    'apps.shop',
+    'apps.mainadmin',
 
 ]
 
@@ -184,7 +186,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
 
+
 STATIC_ROOT=os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,"media")

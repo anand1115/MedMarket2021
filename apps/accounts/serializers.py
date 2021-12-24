@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         return data
     
     def validate_full_name(self,full_name):
-        if(not full_name.isalnum() or (not 3<len(full_name)<100)):
+        if(not 3<len(full_name)<100):
             raise serializers.ValidationError("Invalid Full Name.")
         return full_name
     

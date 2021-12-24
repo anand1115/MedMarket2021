@@ -5,6 +5,7 @@ class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_authenticated and request.user.is_admin)
 
+
 class CustomPermission(permissions.BasePermission):
     role_name = ''
     def has_permission(self, request, view):
@@ -29,6 +30,9 @@ class IsBDM(CustomPermission):
 
 class IsStaff(CustomPermission):
     role_name = 'staff'
+
+class IsVerified(CustomPermission):
+    role_name="verified"
 
 def check_custom_permissions(user, allowed_roles):
     if user:
