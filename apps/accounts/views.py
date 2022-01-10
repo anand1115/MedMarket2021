@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from MedMarket.MedMarket.settings import REST_FRAMEWORK
+
 from .serializers import *
 from .models import *
 from .permissions import *
@@ -115,6 +117,8 @@ class SignupView(APIView):
             if not 5<=len(password)<=100: return Response({"error":"Password Length Should be atleast 5."},422)
         else:
             return Response({"error":serializer.errors},422)
+    def get(self,request):
+        return Response({"message":"success"},200)
     
     def post(self,request):
         check=self.validate(request)
