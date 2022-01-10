@@ -75,29 +75,14 @@ class MyCart:
         cart=self.cart
         cart.address=address
         cart.save()
-
-
-import requests
-import json
-from apps.mainadmin.models import ShipRocketToken
-
-class ShipRocket:
-    def __init__(self,cart):
-        self.cart=cart
-        self.address=self.cart.address
     
-    def check_serivce(self):
-        if(not self.address):
-            return False
-        url = "https://apiv2.shiprocket.in/v1/external/courier/serviceability/"
-        payload={}
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer {{token}}'
-        }
-        response = requests.request("GET", url, headers=headers, data=payload)
+    def count(self):
+        return CartItem.objects.filter(cart=self.cart).count()
 
-        print(response.text)
+
+
+            
+
         
     
 

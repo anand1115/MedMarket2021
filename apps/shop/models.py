@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from apps.product.models import Product,Category,SubCategory
 from apps.accounts.models import User
 import uuid
@@ -55,6 +56,7 @@ class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     status=models.BooleanField(default=False)
     modified_on=models.DateTimeField(auto_now_add=True)
+    prepaid=models.BooleanField(default=True)
 
     @property
     def total_selling_price(self):
@@ -82,6 +84,13 @@ class Cart(models.Model):
             if(total_price>self.promocode.maximum_discount):
                 total_price=self.promocode.maximum_discount
         return round(total_price,2)
+    
+    @property
+    def get_weight(self):
+        cartitems=self.cartitem_set.all()
+        total_weight=sum([i.item_weight for i in cartitems])
+        return round(total_weight,2)
+
 
 
 
@@ -104,6 +113,10 @@ class CartItem(models.Model):
     @property
     def item_marked_price(self):
         return self.product.marked_price*self.quantity
+    
+    @property
+    def item_weight(self):
+        return self.product.weight*self.quantity
 
     @property
     def item_promocode_discount_price(self):
@@ -128,6 +141,31 @@ class CartItem(models.Model):
             if self.product in list(self.cart.promocode.product.all()):
                 return True
             return False
+
+
+
+class Order(models.Model):
+    id=models.UUIDField(primary_key=True,editable=False,default=uuid.uuid4)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    cart=models.ForeignKey(Cart,on_delete=models.CASCADE)
+    details=models.JSONField(default=dict)
+    added_on=models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=250,default="ordered")
+    prepaid=models.BooleanField()
+    active=models.BooleanField(default=True)
+
+
+class MCredit(models.Model):
+    id=models.UUIDField(primary_key=True,editable=False,default=uuid.uuid4)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    order=models.OneToOneField(Order,on_delete=models.CASCADE)
+    price=models.DecimalField(decimal_places=2,max_digits=10)
+    paid=models.BooleanField(default=False)
+    added_on=models.DateTimeField(auto_now_add=True)
+    
+    
+
+
 
 
 

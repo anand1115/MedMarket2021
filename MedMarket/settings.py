@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import json,datetime
 
-PRODUCTION =True
+PRODUCTION = False
 
 if PRODUCTION:
     with open(f"{BASE_DIR}/production.json","r") as f:
@@ -54,11 +54,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'django_apscheduler',
 
     'apps.accounts',
     'apps.product',
     'apps.shop',
     'apps.mainadmin',
+    'apps.shiprocket',
 
 ]
 
@@ -121,6 +123,16 @@ REST_FRAMEWORK = {
                                 'django_filters.rest_framework.DjangoFilterBackend'],
     'PAGE_SIZE': 10
 }
+
+SCHEDULER_CONFIG = {
+    "apscheduler.jobstores.default": {
+        "class": "django_apscheduler.jobstores:DjangoJobStore"
+    },
+    'apscheduler.executors.processpool': {
+        "type": "threadpool"
+    },
+}
+SCHEDULER_AUTOSTART = True
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -193,8 +205,15 @@ MEDIA_URL="/media/"
 
 MEDIA_ROOT=os.path.join(BASE_DIR,"media")
 
-import mimetypes
 
-mimetypes.add_type("text/css", ".css", True)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST ="mail.medmarket.co.in"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "noreply@medmarket.co.in"
+EMAIL_HOST_PASSWORD = "medmarket@2021"
+
 
 OTP_INTERVAL_TIME=data["OTP_INTERVAL_TIME"]
+SHIPROCKET_EMAIL=data['SHIPROCKET_EMAIL']
+SHIPROCKET_PASSWORD=data['SHIPROCKET_PASSWORD']

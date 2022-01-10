@@ -1,11 +1,19 @@
 from .models import *
 from rest_framework import serializers
 from apps.product.serializers import *
+from apps.accounts.serializers import *
 
 class PromoCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model=Promocode
         fields="__all__"
+    
+    def to_representation(self, instance):
+        data=super().to_representation(instance)
+        data['category']=CategorySerializer(instance.category.all(),many=True).data
+        data['product']=ProductSerializer(instance.product.all(),many=True).data
+        data['subcategory']=ProductSerializer(instance.subcategory.all(),many=True).data
+        return data
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -22,6 +30,11 @@ class AddressSerializer(serializers.ModelSerializer):
         if ((not value.isdigit()) or (len(value)!=10)):
             raise serializers.ValidationError("Please Give Valid Phonenumber !!")
         return value
+    
+    def to_representation(self, instance):
+        data=super().to_representation(instance)
+        data['user']=UserSerializer(instance.user).data
+        return data
 
 
 
@@ -36,6 +49,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         data["total_item_marked_price"]=instance.item_marked_price
         data["total_item_discount_price"]=instance.item_discount_price
         data['product']=ProductSerializer(instance.product).data
+        data["cart"]=str(instance.cart.id)
         return data
 
 
@@ -53,7 +67,14 @@ class CartSerializer(serializers.ModelSerializer):
         data["cart_items"]=CartItemSerializer(CartItem.objects.filter(cart=instance),many=True).data
         data["promocode"]=PromoCodeSerializer(instance.promocode).data if instance.promocode else None
         data["address"]=AddressSerializer(instance.address).data if instance.address else None
+        data["user"]=UserSerializer(instance.user).data
         return data
+    
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Order
+        fields="__all__"
 
 
 

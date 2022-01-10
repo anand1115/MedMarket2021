@@ -25,6 +25,7 @@ urlpatterns = [
     path('product/',include("apps.product.urls")),
     path('shop/',include("apps.shop.urls")),
     path('mainadmin/',include("apps.mainadmin.urls")),
+    path('shiprocket/',include("apps.shiprocket.urls")),
 ]
 
 urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

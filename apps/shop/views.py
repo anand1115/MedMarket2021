@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.utils.translation import activate
-from rest_framework import response
-from rest_framework.serializers import Serializer
+from django.db.models.fields import json
+from requests import api
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.core.serializers.json import DjangoJSONEncoder  
+
 
 from apps.accounts.permissions import *
 
@@ -11,6 +11,8 @@ from .models import *
 from .serializers import *
 
 from .services import *
+
+import json 
 
 
 class CartView(APIView):
@@ -143,7 +145,7 @@ class AddressView(APIView):
 
 
 
-
+from pprint import pprint
 class CheckOutView(APIView):
     permission_classes=[IsVerified]
 
@@ -161,6 +163,61 @@ class CheckOutView(APIView):
         mycart=MyCart(request)
         mycart.set_address(address)
         return Response({"message":"Address updated successfully"},200)
+    
+    def post(self,request):
+        mycart=MyCart(request)
+        temp=self.check(request)
+        if temp:
+            return temp
+        details=json.dumps(CartSerializer(mycart.cart).data,cls=DjangoJSONEncoder)
+        order=Order.objects.create(details=details,cart=mycart.cart,user=request.user,prepaid=False)
+        MCredit.objects.create(order=order,user=request.user,price=mycart.cart.total_selling_price)
+        cart=mycart.cart
+        cart.status=True
+        cart.prepaid=False
+        cart.save()
+        return Response({"message":"Order Placed Successfully","data":details},200)
+    
+    def check(self,request):
+        mycart=MyCart(request)
+        if(not mycart.address):
+            return Response({"error":"Address Not Selected !!"},400)
+        if(mycart.count()<=0):
+            return Response({"error":"Your Cart is empty!!"},400)
+        if(mycart.cart.total_selling_price>request.user.credit):
+            return Response({"error":"you are not eligible for credit for this cart total !!"},400)
+        return None
+
+
+class OrderView(APIView):
+    permission_classes=[IsVerified]
+
+    def get(self,request):
+        id=request.GET.get("id")
+        if(id):
+            try:
+                return Response({"message":"success","data":OrderSerializer(Order.objects.get(id=id)).data},200)
+            except:
+                return Response({"error":"Invalid Order Id"},400)
+        orders=Order.objects.filter(user=request.user)
+        data=OrderSerializer(orders,many=True).data
+        return Response({"message":"success","data":data},200)
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+class SendMailView(APIView):
+
+    def get(self,request):
+        subject = 'Thank you for registering to our site'
+        message = ' it  means a world to us '
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = ['anand.pasam15@gmail.com',]
+        send_mail( subject, message, email_from, recipient_list )
+        return Response({"message":"mail sent successfully"},200)
+
+
+
         
         
     

@@ -28,8 +28,8 @@ class LoginView(APIView):
             user=User.objects.get(phonenumber=phonenumber)
         except:
             return Response({"error":"Phonenumber Not Found !!"},400)
-        otp=OtpView().get_otp(phonenumber)
-        return Response({"message":"otp sent succesfully!!","otp":otp},200)
+        otp=OtpView().get_otp(phonenumber,user.email)
+        return Response({"message":"otp sent succesfully!!"},200)
 
     def post(self, request):
 
@@ -70,7 +70,7 @@ class LoginView(APIView):
         except:
             return Response({"error":"Phonenumber Not Found !!"},400)
         if not otp: return Response({"error":"Please enter otp !"},422)
-        temp=OtpView().validate_otp(otp,phonenumber)
+        temp=OtpView().validate_otp(otp,phonenumber,user.email)
         if(temp):
             refresh = RefreshToken.for_user(user)
             return Response({
@@ -123,7 +123,7 @@ class SignupView(APIView):
         phonenumber=request.data.get("phonenumber")
         email=request.data.get("email")
         otp=OtpView().get_otp(phonenumber,email)
-        return Response({"message":"success","otp":otp},200)
+        return Response({"message":"success"},200)
     
     def put(self,request):
         check=self.validate(request)
@@ -156,8 +156,8 @@ class ForgotPasswordView(APIView):
             user=User.objects.get(phonenumber=phonenumber)
         except:
             return Response({"error":"Phonenumber Not Found !!"},400)
-        otp=OtpView().get_otp(phonenumber)
-        return Response({"message":"otp sent succesfully!!","otp":otp},200)
+        otp=OtpView().get_otp(phonenumber,user.email)
+        return Response({"message":"otp sent succesfully!!"},200)
     
     def post(self,request):
         data=request.data
@@ -170,7 +170,7 @@ class ForgotPasswordView(APIView):
             return Response({"error":"Phonenumber Not Found !!"},400)
         if not otp: return Response({"error":"Please enter otp !"},422)
         if not password: return Response({"error":"Please enter password !"},422)
-        temp=OtpView().validate_otp(otp,phonenumber)
+        temp=OtpView().validate_otp(otp,phonenumber,user.email)
         if temp:
             user.set_password(password)
             user.save()

@@ -4,5 +4,7 @@
     "DATABASE_PASSWORD": "", 
     "DATABASE_HOST": "127.0.0.1",
     "DATABASE_PORT": "3306",
-    "OTP_INTERVAL_TIME":180
+    "OTP_INTERVAL_TIME":180,
+    "SHIPROCKET_EMAIL":"anandpasam2001@gmail.com",
+    "SHIPROCKET_PASSWORD":"Mounika@0718"
 }

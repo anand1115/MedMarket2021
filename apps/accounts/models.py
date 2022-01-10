@@ -17,6 +17,7 @@ class User(AbstractBaseUser):
 	date_joined=models.DateTimeField(auto_now_add=True)
 	verified=models.BooleanField(default=False)
 	status=models.CharField(max_length=250,default="OnHold")#Approved,Suspended
+	credit=models.DecimalField(max_digits=10,decimal_places=2,default=0)
 
 	USERNAME_FIELD='phonenumber'
 

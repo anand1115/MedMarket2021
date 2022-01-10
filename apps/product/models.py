@@ -70,6 +70,10 @@ class Product(models.Model):
     added_on=models.DateTimeField(auto_now_add=True)
     expiry_date=models.DateField()
     batch_number=models.CharField(max_length=250)
+    length=models.DecimalField(decimal_places=2,max_digits=50)
+    breadth=models.DecimalField(decimal_places=2,max_digits=50)
+    height=models.DecimalField(decimal_places=2,max_digits=50)
+    weight=models.DecimalField(decimal_places=2,max_digits=50)
 
     def save(self,*args,**kwargs):
         if(self.selling_price>=self.marked_price):
