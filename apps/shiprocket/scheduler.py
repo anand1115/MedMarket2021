@@ -29,5 +29,5 @@ def update_token():
 def start():
     scheduler.add_job(update_token,"interval",minutes=10000,id="promocode_status",max_instances=100000000000,replace_existing=True)
     register_events(scheduler)
-    update_token()
+    # update_token()
     scheduler.start()
