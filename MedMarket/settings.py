@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 import json,datetime
 
-PRODUCTION = False
+PRODUCTION = True
 
 if PRODUCTION:
     with open(f"{BASE_DIR}/production.json","r") as f:

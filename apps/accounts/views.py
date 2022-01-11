@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from MedMarket.MedMarket.settings import REST_FRAMEWORK
 
 from .serializers import *
 from .models import *
